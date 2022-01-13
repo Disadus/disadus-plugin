@@ -1,0 +1,13 @@
+{
+  "name": "disadus-plugin-api",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "API for plugins to communicate with Disadus!",
+  "main": "output/index.js",
+  "repository": "https://github.com/Disadus/disadus-plugin-api.git",
+  "author": "John Li (Tet) <tet@tet.moe>",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^4.5.4"
+  }
+}
