@@ -41,7 +41,7 @@ class APIWrapper {
         return requestId;
     }
     sendRequest(name, data) {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             var _a;
             const requestId = this.getRequestId();
             const message = {
@@ -49,6 +49,9 @@ class APIWrapper {
                 event: name,
                 request: data,
             };
+            while (!this._ready) {
+                await new Promise((resolve) => setTimeout(resolve, 20));
+            }
             (_a = this._parent) === null || _a === void 0 ? void 0 : _a.postMessage(message);
             this.requests.set(requestId, (response) => {
                 resolve(response.response);

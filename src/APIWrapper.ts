@@ -55,13 +55,16 @@ export class APIWrapper {
     return requestId;
   }
   sendRequest(name: string, data: any): Promise<RequestResponse<any>> {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       const requestId = this.getRequestId();
       const message = {
         requestID: requestId,
         event: name,
         request: data,
       } as RawRequest<any>;
+      while (!this._ready) {
+        await new Promise((resolve) => setTimeout(resolve, 20));
+      }
       this._parent?.postMessage(message);
       this.requests.set(requestId, (response) => {
         resolve(response.response);
