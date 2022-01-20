@@ -29,8 +29,7 @@ export class APIWrapper {
     return APIWrapper._self;
   }
   constructor() {
-    window.addEventListener("message", this.processMessage);
-    window.addEventListener("message", this.ready);
+    window.onmessage = this.ready;
   }
   processMessage(event: MessageEvent): void {
     const message = event.data as RawResponse<any>;
@@ -45,7 +44,7 @@ export class APIWrapper {
   ready(event: MessageEvent): void {
     this._parent = event.source;
     this._ready = event.data.success;
-    window.removeEventListener("message", this.ready);
+    window.onmessage = this.processMessage;
   }
   getRequestId() {
     let requestId = Math.random().toString(36).substring(2);
@@ -65,7 +64,7 @@ export class APIWrapper {
       while (!this._ready) {
         await new Promise((resolve) => setTimeout(resolve, 20));
       }
-      this._parent?.postMessage(message);
+      window.top?.postMessage(message);
       this.requests.set(requestId, (response) => {
         resolve(response.response);
       });
