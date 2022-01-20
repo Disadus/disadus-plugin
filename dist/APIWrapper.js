@@ -3,9 +3,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.APIWrapper = void 0;
 class APIWrapper {
     constructor() {
+        var _a;
         this._ready = false;
         this._parent = null;
         this.requests = new Map();
+        (_a = window.top) === null || _a === void 0 ? void 0 : _a.postMessage({
+            event: "connect",
+        });
         window.onmessage = this.ready;
     }
     get readyState() {
@@ -51,7 +55,7 @@ class APIWrapper {
             while (!this._ready) {
                 await new Promise((resolve) => setTimeout(resolve, 20));
             }
-            (_a = window.top) === null || _a === void 0 ? void 0 : _a.postMessage(message);
+            (_a = window.top) === null || _a === void 0 ? void 0 : _a.postMessage(JSON.stringify(message), "*", []);
             this.requests.set(requestId, (response) => {
                 resolve(response.response);
             });

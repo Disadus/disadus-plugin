@@ -29,6 +29,9 @@ export class APIWrapper {
     return APIWrapper._self;
   }
   constructor() {
+    window.top?.postMessage({
+      event: "connect",
+    });
     window.onmessage = this.ready;
   }
   processMessage(event: MessageEvent): void {
@@ -64,7 +67,7 @@ export class APIWrapper {
       while (!this._ready) {
         await new Promise((resolve) => setTimeout(resolve, 20));
       }
-      window.top?.postMessage(message);
+      window.top?.postMessage(JSON.stringify(message), "*", []);
       this.requests.set(requestId, (response) => {
         resolve(response.response);
       });
