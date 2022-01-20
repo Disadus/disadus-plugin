@@ -1,3 +1,3 @@
-import { APIWrapper } from "./APIWrapper"
-
+import { APIWrapper } from "./APIWrapper";
+export { APIWrapper };
 export default APIWrapper;
