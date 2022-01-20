@@ -3,13 +3,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.APIWrapper = void 0;
 class APIWrapper {
     constructor() {
-        var _a;
         this._ready = false;
         this._parent = null;
         this.requests = new Map();
-        (_a = window.top) === null || _a === void 0 ? void 0 : _a.postMessage({
-            event: "connect",
-        });
+        if (window.top) {
+            console.log("[APIWrapper]", "Constructing APIWrapper");
+            window.top.postMessage({
+                event: "connect",
+            });
+        }
+        else {
+            console.error("No window.top");
+        }
         window.onmessage = this.ready;
     }
     get readyState() {

@@ -29,9 +29,15 @@ export class APIWrapper {
     return APIWrapper._self;
   }
   constructor() {
-    window.top?.postMessage({
-      event: "connect",
-    });
+    if (window.top){
+      console.log("[APIWrapper]", "Constructing APIWrapper");
+      window.top.postMessage({
+        event: "connect",
+      });
+    }
+    else {
+      console.error("No window.top");
+    }
     window.onmessage = this.ready;
   }
   processMessage(event: MessageEvent): void {
