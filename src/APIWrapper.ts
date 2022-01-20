@@ -32,7 +32,7 @@ export class APIWrapper {
     window.onmessage = this.ready;
   }
   processMessage(event: MessageEvent): void {
-    const message = event.data as RawResponse<any>;
+    const message = JSON.parse(event.data) as RawResponse<any>;
     if (message.response) {
       const callback = this.requests.get(message.requestID);
       if (callback) {
@@ -43,7 +43,7 @@ export class APIWrapper {
   }
   ready(event: MessageEvent): void {
     this._parent = event.source;
-    this._ready = event.data.success;
+    this._ready = true;
     window.onmessage = this.processMessage;
   }
   getRequestId() {

@@ -6,8 +6,7 @@ class APIWrapper {
         this._ready = false;
         this._parent = null;
         this.requests = new Map();
-        window.addEventListener("message", this.processMessage);
-        window.addEventListener("message", this.ready);
+        window.onmessage = this.ready;
     }
     get readyState() {
         return this._ready;
@@ -19,7 +18,7 @@ class APIWrapper {
         return APIWrapper._self;
     }
     processMessage(event) {
-        const message = event.data;
+        const message = JSON.parse(event.data);
         if (message.response) {
             const callback = this.requests.get(message.requestID);
             if (callback) {
@@ -30,8 +29,8 @@ class APIWrapper {
     }
     ready(event) {
         this._parent = event.source;
-        this._ready = event.data.success;
-        window.removeEventListener("message", this.ready);
+        this._ready = true;
+        window.onmessage = this.processMessage;
     }
     getRequestId() {
         let requestId = Math.random().toString(36).substring(2);
@@ -52,7 +51,7 @@ class APIWrapper {
             while (!this._ready) {
                 await new Promise((resolve) => setTimeout(resolve, 20));
             }
-            (_a = this._parent) === null || _a === void 0 ? void 0 : _a.postMessage(message);
+            (_a = window.top) === null || _a === void 0 ? void 0 : _a.postMessage(message);
             this.requests.set(requestId, (response) => {
                 resolve(response.response);
             });
