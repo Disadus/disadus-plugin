@@ -21,6 +21,13 @@ export class APIWrapper {
   get readyState(): boolean {
     return this._ready;
   }
+  static _self: APIWrapper;
+  static get self(): APIWrapper {
+    if (!APIWrapper._self) {
+      APIWrapper._self = new APIWrapper();
+    }
+    return APIWrapper._self;
+  }
   constructor() {
     window.addEventListener("message", this.processMessage);
     window.addEventListener("message", this.ready);
