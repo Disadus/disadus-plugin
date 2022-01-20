@@ -29,13 +29,14 @@ export class APIWrapper {
     return APIWrapper._self;
   }
   constructor() {
-    if (window.top){
+    if (window.top) {
       console.log("[APIWrapper]", "Constructing APIWrapper");
-      window.top.postMessage({
-        event: "connect",
-      });
-    }
-    else {
+      window.top.postMessage(
+        JSON.stringify({
+          event: "connect",
+        })
+      );
+    } else {
       console.error("No window.top");
     }
     window.onmessage = this.ready;

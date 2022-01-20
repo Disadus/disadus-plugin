@@ -8,9 +8,9 @@ class APIWrapper {
         this.requests = new Map();
         if (window.top) {
             console.log("[APIWrapper]", "Constructing APIWrapper");
-            window.top.postMessage({
+            window.top.postMessage(JSON.stringify({
                 event: "connect",
-            });
+            }));
         }
         else {
             console.error("No window.top");
