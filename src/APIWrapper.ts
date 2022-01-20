@@ -1,4 +1,4 @@
-import { User } from "./types/DisadusTypes";
+import { PublicUser, User } from "./types/DisadusTypes";
 
 export type RequestResponse<T> = {
   event: string;
@@ -68,9 +68,12 @@ export class APIWrapper {
       });
     });
   }
-  getUser(userid: string): Promise<RequestResponse<User>> {
+  getUser(userid: string): Promise<RequestResponse<PublicUser>> {
     return this.sendRequest("getUser", {
       userid,
     });
+  }
+  getSelf(): Promise<RequestResponse<User>> {
+    return this.sendRequest("getSelf", {});
   }
 }
