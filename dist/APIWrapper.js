@@ -60,5 +60,8 @@ class APIWrapper {
             userid,
         });
     }
+    getSelf() {
+        return this.sendRequest("getSelf", {});
+    }
 }
 exports.APIWrapper = APIWrapper;
