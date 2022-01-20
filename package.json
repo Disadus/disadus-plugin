@@ -1,6 +1,5 @@
 {
   "name": "@Disadus/disadus-plugin-api",
-  "type": "module",
   "version": "1.0.5",
   "description": "API for plugins to communicate with Disadus!",
   "main": "dist/index.js",
