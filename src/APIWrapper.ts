@@ -36,7 +36,7 @@ export class APIWrapper {
         JSON.stringify({
           event: "connect",
         })
-      );
+        , "*", []);
     } else {
       console.error("No window.top");
     }

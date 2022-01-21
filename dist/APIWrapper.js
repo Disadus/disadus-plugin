@@ -21,7 +21,7 @@ class APIWrapper {
             console.log("[APIWrapper]", "Constructing APIWrapper");
             window.top.postMessage(JSON.stringify({
                 event: "connect",
-            }));
+            }), "*", []);
         }
         else {
             console.error("No window.top");
