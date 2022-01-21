@@ -67,7 +67,6 @@ export class APIWrapper {
     this._ready = true;
     window.addEventListener("message", this.processMessage.bind(this));
     window.removeEventListener("message", this.ready.bind(this));
-    console.log("[APIWrapper]", "ready", this._ready, this);
   }
   getRequestId() {
     let requestId = Math.random().toString(36).substring(2);
@@ -86,9 +85,7 @@ export class APIWrapper {
       } as RawRequest<any>;
       while (!this._ready) {
         await new Promise((resolve) => setTimeout(resolve, 20));
-        console.log("[APIWrapper]", "Waiting for ready", this._ready, this);
       }
-      console.log("[APIWrapper]", "Sending request", message);
       window.top?.postMessage(JSON.stringify(message), "*", []);
       this.requests.set(requestId, (response) => {
         resolve(response.response);
