@@ -58,10 +58,16 @@ export class APIWrapper {
     }
   }
   ready(event: MessageEvent): void {
+    if (this._ready) {
+      console.error("[APIWrapper]", "Already ready");
+      return;
+    }
+
     console.log("[APIWrapper]", "ready");
     this._ready = true;
     window.addEventListener("message", this.processMessage);
     window.removeEventListener("message", this.ready);
+    console.log("[APIWrapper]", "ready", this._ready, this);
   }
   getRequestId() {
     let requestId = Math.random().toString(36).substring(2);
