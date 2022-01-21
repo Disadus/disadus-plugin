@@ -6,11 +6,12 @@ class APIWrapper {
         this._ready = false;
         this._parent = null;
         this.requests = new Map();
+        this.init();
     }
     get readyState() {
         return this._ready;
     }
-    static get self() {
+    static getInstance() {
         if (!APIWrapper._self) {
             APIWrapper._self = new APIWrapper();
         }

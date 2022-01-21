@@ -19,7 +19,7 @@ export declare class APIWrapper {
     requests: Map<string, (data: RawResponse<any>) => void>;
     get readyState(): boolean;
     static _self: APIWrapper;
-    static get self(): APIWrapper;
+    static getInstance(): APIWrapper;
     constructor();
     init(): void;
     processMessage(event: MessageEvent): void;
