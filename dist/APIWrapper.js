@@ -27,7 +27,7 @@ class APIWrapper {
         else {
             console.error("No window.top");
         }
-        window.addEventListener("message", this.ready);
+        window.addEventListener("message", this.ready.bind(this));
     }
     processMessage(event) {
         const message = JSON.parse(event.data);
@@ -46,8 +46,8 @@ class APIWrapper {
         }
         console.log("[APIWrapper]", "ready");
         this._ready = true;
-        window.addEventListener("message", this.processMessage);
-        window.removeEventListener("message", this.ready);
+        window.addEventListener("message", this.processMessage.bind(this));
+        window.removeEventListener("message", this.ready.bind(this));
         console.log("[APIWrapper]", "ready", this._ready, this);
     }
     getRequestId() {
