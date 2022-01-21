@@ -22,21 +22,26 @@ export class APIWrapper {
     return this._ready;
   }
   static _self: APIWrapper;
-  static get self(): APIWrapper {
+  static getInstance(): APIWrapper {
     if (!APIWrapper._self) {
       APIWrapper._self = new APIWrapper();
     }
     return APIWrapper._self;
   }
-  constructor() {}
+
+  constructor() {
+    this.init();
+  }
   init() {
     if (window.top) {
       console.log("[APIWrapper]", "Constructing APIWrapper");
       window.top.postMessage(
         JSON.stringify({
           event: "connect",
-        })
-        , "*", []);
+        }),
+        "*",
+        []
+      );
     } else {
       console.error("No window.top");
     }
@@ -75,7 +80,7 @@ export class APIWrapper {
       } as RawRequest<any>;
       while (!this._ready) {
         await new Promise((resolve) => setTimeout(resolve, 20));
-        console.log("[APIWrapper]", "Waiting for ready",this._ready,this);
+        console.log("[APIWrapper]", "Waiting for ready", this._ready, this);
       }
       console.log("[APIWrapper]", "Sending request", message);
       window.top?.postMessage(JSON.stringify(message), "*", []);
