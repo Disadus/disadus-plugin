@@ -6,16 +6,6 @@ class APIWrapper {
         this._ready = false;
         this._parent = null;
         this.requests = new Map();
-        if (window.top) {
-            console.log("[APIWrapper]", "Constructing APIWrapper");
-            window.top.postMessage(JSON.stringify({
-                event: "connect",
-            }));
-        }
-        else {
-            console.error("No window.top");
-        }
-        window.onmessage = this.ready;
     }
     get readyState() {
         return this._ready;
@@ -25,6 +15,18 @@ class APIWrapper {
             APIWrapper._self = new APIWrapper();
         }
         return APIWrapper._self;
+    }
+    init() {
+        if (window.top) {
+            console.log("[APIWrapper]", "Constructing APIWrapper");
+            window.top.postMessage(JSON.stringify({
+                event: "connect",
+            }));
+        }
+        else {
+            console.error("No window.top");
+        }
+        window.addEventListener("message", this.ready);
     }
     processMessage(event) {
         const message = JSON.parse(event.data);
@@ -37,9 +39,10 @@ class APIWrapper {
         }
     }
     ready(event) {
-        this._parent = event.source;
+        console.log("[APIWrapper]", "ready");
         this._ready = true;
-        window.onmessage = this.processMessage;
+        window.addEventListener("message", this.processMessage);
+        window.removeEventListener("message", this.ready);
     }
     getRequestId() {
         let requestId = Math.random().toString(36).substring(2);

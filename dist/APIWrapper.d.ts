@@ -21,6 +21,7 @@ export declare class APIWrapper {
     static _self: APIWrapper;
     static get self(): APIWrapper;
     constructor();
+    init(): void;
     processMessage(event: MessageEvent): void;
     ready(event: MessageEvent): void;
     getRequestId(): string;

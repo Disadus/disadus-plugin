@@ -28,7 +28,8 @@ export class APIWrapper {
     }
     return APIWrapper._self;
   }
-  constructor() {
+  constructor() {}
+  init() {
     if (window.top) {
       console.log("[APIWrapper]", "Constructing APIWrapper");
       window.top.postMessage(
@@ -39,7 +40,7 @@ export class APIWrapper {
     } else {
       console.error("No window.top");
     }
-    window.onmessage = this.ready;
+    window.addEventListener("message", this.ready);
   }
   processMessage(event: MessageEvent): void {
     const message = JSON.parse(event.data) as RawResponse<any>;
@@ -52,9 +53,10 @@ export class APIWrapper {
     }
   }
   ready(event: MessageEvent): void {
-    this._parent = event.source;
+    console.log("[APIWrapper]", "ready");
     this._ready = true;
-    window.onmessage = this.processMessage;
+    window.addEventListener("message", this.processMessage);
+    window.removeEventListener("message", this.ready);
   }
   getRequestId() {
     let requestId = Math.random().toString(36).substring(2);
