@@ -62,7 +62,9 @@ class APIWrapper {
             };
             while (!this._ready) {
                 await new Promise((resolve) => setTimeout(resolve, 20));
+                console.log("[APIWrapper]", "Waiting for ready");
             }
+            console.log("[APIWrapper]", "Sending request", message);
             (_a = window.top) === null || _a === void 0 ? void 0 : _a.postMessage(JSON.stringify(message), "*", []);
             this.requests.set(requestId, (response) => {
                 resolve(response.response);
