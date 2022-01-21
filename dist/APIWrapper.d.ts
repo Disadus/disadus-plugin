@@ -1,4 +1,4 @@
-import { PublicUser, User } from "./types/DisadusTypes";
+import { Community, PublicUser, User } from "./types/DisadusTypes";
 export declare type RequestResponse<T> = {
     event: string;
     success: boolean;
@@ -28,5 +28,6 @@ export declare class APIWrapper {
     sendRequest(name: string, data: any): Promise<RequestResponse<any>>;
     getUser(userid: string): Promise<RequestResponse<PublicUser>>;
     getSelf(): Promise<RequestResponse<User>>;
+    getCommunity(communityid: string): Promise<RequestResponse<Community>>;
 }
 //# sourceMappingURL=APIWrapper.d.ts.map

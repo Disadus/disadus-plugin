@@ -1,4 +1,4 @@
-import { PublicUser, User } from "./types/DisadusTypes";
+import { Community, PublicUser, User } from "./types/DisadusTypes";
 
 export type RequestResponse<T> = {
   event: string;
@@ -100,4 +100,10 @@ export class APIWrapper {
   getSelf(): Promise<RequestResponse<User>> {
     return this.sendRequest("getSelf", {});
   }
+  getCommunity(communityid: string): Promise<RequestResponse<Community>> {
+    return this.sendRequest("getCommunity", {
+      communityid,
+    });
+  }
+  
 }

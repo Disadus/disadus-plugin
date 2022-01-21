@@ -82,5 +82,10 @@ class APIWrapper {
     getSelf() {
         return this.sendRequest("getSelf", {});
     }
+    getCommunity(communityid) {
+        return this.sendRequest("getCommunity", {
+            communityid,
+        });
+    }
 }
 exports.APIWrapper = APIWrapper;
