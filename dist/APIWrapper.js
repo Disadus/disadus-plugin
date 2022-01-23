@@ -49,6 +49,9 @@ class APIWrapper {
             }
             this.requests.delete(message.requestID);
         }
+        if (message.response.event === 'token') {
+            this._token = message.response.data;
+        }
     }
     ready(event) {
         if (this._ready) {
@@ -110,9 +113,11 @@ class APIWrapper {
         return result.success;
     }
     async waitForToken() {
+        console.log("[APIWrapper]", "Waiting for token", this);
         while (!this._token) {
             await new Promise((resolve) => setTimeout(resolve, 20));
         }
+        console.log("[APIWrapper]", "Got token", this._token);
         return this._token;
     }
     async getUser(userid) {
