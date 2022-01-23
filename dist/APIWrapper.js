@@ -55,6 +55,15 @@ class APIWrapper {
             console.error("[APIWrapper]", "Already ready");
             return;
         }
+        if (typeof event.data !== "string") {
+            return;
+        }
+        try {
+            JSON.parse(event.data);
+        }
+        catch (error) {
+            return;
+        }
         console.log("[APIWrapper]", "readyy");
         this._ready = true;
         console.log("[APIWrapper]", "Token", event.data);
