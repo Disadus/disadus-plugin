@@ -71,7 +71,7 @@ class APIWrapper {
         this._ready = true;
         console.log("[APIWrapper]", "Token", event.data);
         const tokenInfo = JSON.parse(event.data);
-        this._token = tokenInfo;
+        this._token = tokenInfo.response.data;
         window.addEventListener("message", this.processMessage.bind(this));
         window.removeEventListener("message", this.ready.bind(this));
     }
