@@ -76,7 +76,7 @@ export class APIWrapper {
       console.error("[APIWrapper]", "Already ready");
       return;
     }
-    console.log("[APIWrapper]", "ready");
+    console.log("[APIWrapper]", "readyy");
     this._ready = true;
     const tokenInfo = JSON.parse(event.data) as TokenInfo;
     this._token = tokenInfo;
