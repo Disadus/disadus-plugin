@@ -13,9 +13,22 @@ export declare type RawRequest<T> = {
     event: string;
     request: T;
 };
+export declare type TokenInfo = {
+    token: string;
+    expires: number;
+} | null;
+export declare enum PluginIntent {
+    getSelf = "getSelf",
+    getUser = "getUser",
+    getUsers = "getUsers",
+    getAssignment = "getAssignment",
+    getCourse = "getCourse",
+    getCommunity = "getCommunity"
+}
 export declare class APIWrapper {
     _ready: boolean;
     _parent: MessageEventSource | null;
+    _token: TokenInfo;
     requests: Map<string, (data: RawResponse<any>) => void>;
     get readyState(): boolean;
     static _self: APIWrapper;
@@ -26,8 +39,13 @@ export declare class APIWrapper {
     ready(event: MessageEvent): void;
     getRequestId(): string;
     sendRequest(name: string, data: any): Promise<RequestResponse<any>>;
-    getUser(userid: string): Promise<RequestResponse<PublicUser>>;
-    getSelf(): Promise<RequestResponse<User>>;
-    getCommunity(communityid: string): Promise<RequestResponse<Community>>;
+    requestIntents(intents: PluginIntent[]): Promise<boolean>;
+    waitForToken(): Promise<{
+        token: string;
+        expires: number;
+    }>;
+    getUser(userid: string): Promise<PublicUser | null>;
+    getSelf(): Promise<User | null>;
+    getCommunity(communityid: string): Promise<Community | null>;
 }
 //# sourceMappingURL=APIWrapper.d.ts.map

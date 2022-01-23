@@ -14,9 +14,23 @@ export type RawRequest<T> = {
   event: string;
   request: T;
 };
+export type TokenInfo = {
+  token: string;
+  expires: number;
+} | null;
+export enum PluginIntent {
+  // Chat
+  getSelf = "getSelf",
+  getUser = "getUser",
+  getUsers = "getUsers",
+  getAssignment = "getAssignment",
+  getCourse = "getCourse",
+  getCommunity = "getCommunity",
+}
 export class APIWrapper {
   _ready: boolean = false;
   _parent: MessageEventSource | null = null;
+  _token: TokenInfo = null;
   requests: Map<string, (data: RawResponse<any>) => void> = new Map();
   get readyState(): boolean {
     return this._ready;
@@ -62,9 +76,10 @@ export class APIWrapper {
       console.error("[APIWrapper]", "Already ready");
       return;
     }
-
     console.log("[APIWrapper]", "ready");
     this._ready = true;
+    const tokenInfo = JSON.parse(event.data) as TokenInfo;
+    this._token = tokenInfo;
     window.addEventListener("message", this.processMessage.bind(this));
     window.removeEventListener("message", this.ready.bind(this));
   }
@@ -92,18 +107,41 @@ export class APIWrapper {
       });
     });
   }
-  getUser(userid: string): Promise<RequestResponse<PublicUser>> {
-    return this.sendRequest("getUser", {
-      userid,
-    });
+  async requestIntents(intents: PluginIntent[]) {
+    const result = (await this.sendRequest("requestIntents", {
+      intents,
+    })) as RequestResponse<TokenInfo>;
+    if (result.success) {
+      this._token = result.data;
+    } else {
+      console.error("[APIWrapper]", "RequestIntents failed", result);
+    }
+    return result.success;
   }
-  getSelf(): Promise<RequestResponse<User>> {
-    return this.sendRequest("getSelf", {});
+  async waitForToken() {
+    while (!this._token) {
+      await new Promise((resolve) => setTimeout(resolve, 20));
+    }
+    return this._token;
   }
-  getCommunity(communityid: string): Promise<RequestResponse<Community>> {
-    return this.sendRequest("getCommunity", {
-      communityid,
-    });
+  async getUser(userid: string): Promise<PublicUser | null> {
+    return fetch(`https://api.disadus.app/user/${userid}`, {})
+      .then((res) => res.json())
+      .catch(() => null);
   }
-  
+  async getSelf(): Promise<User | null> {
+    const token = await this.waitForToken();
+    return fetch(`https://api.disadus.app/user/@me`, {
+      headers: {
+        Authorization: `Plugin ${token.token}`,
+      },
+    })
+      .then((res) => res.json())
+      .catch(() => null);
+  }
+  async getCommunity(communityid: string): Promise<Community | null> {
+    return fetch(`https://api.disadus.app/community/${communityid}`, {})
+      .then((res) => res.json())
+      .catch(() => null);
+  }
 }

@@ -1,10 +1,21 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.APIWrapper = void 0;
+exports.APIWrapper = exports.PluginIntent = void 0;
+var PluginIntent;
+(function (PluginIntent) {
+    // Chat
+    PluginIntent["getSelf"] = "getSelf";
+    PluginIntent["getUser"] = "getUser";
+    PluginIntent["getUsers"] = "getUsers";
+    PluginIntent["getAssignment"] = "getAssignment";
+    PluginIntent["getCourse"] = "getCourse";
+    PluginIntent["getCommunity"] = "getCommunity";
+})(PluginIntent = exports.PluginIntent || (exports.PluginIntent = {}));
 class APIWrapper {
     constructor() {
         this._ready = false;
         this._parent = null;
+        this._token = null;
         this.requests = new Map();
         this.init();
     }
@@ -46,6 +57,8 @@ class APIWrapper {
         }
         console.log("[APIWrapper]", "ready");
         this._ready = true;
+        const tokenInfo = JSON.parse(event.data);
+        this._token = tokenInfo;
         window.addEventListener("message", this.processMessage.bind(this));
         window.removeEventListener("message", this.ready.bind(this));
     }
@@ -74,18 +87,43 @@ class APIWrapper {
             });
         });
     }
-    getUser(userid) {
-        return this.sendRequest("getUser", {
-            userid,
-        });
+    async requestIntents(intents) {
+        const result = (await this.sendRequest("requestIntents", {
+            intents,
+        }));
+        if (result.success) {
+            this._token = result.data;
+        }
+        else {
+            console.error("[APIWrapper]", "RequestIntents failed", result);
+        }
+        return result.success;
     }
-    getSelf() {
-        return this.sendRequest("getSelf", {});
+    async waitForToken() {
+        while (!this._token) {
+            await new Promise((resolve) => setTimeout(resolve, 20));
+        }
+        return this._token;
     }
-    getCommunity(communityid) {
-        return this.sendRequest("getCommunity", {
-            communityid,
-        });
+    async getUser(userid) {
+        return fetch(`https://api.disadus.app/user/${userid}`, {})
+            .then((res) => res.json())
+            .catch(() => null);
+    }
+    async getSelf() {
+        const token = await this.waitForToken();
+        return fetch(`https://api.disadus.app/user/@me`, {
+            headers: {
+                Authorization: `Plugin ${token.token}`,
+            },
+        })
+            .then((res) => res.json())
+            .catch(() => null);
+    }
+    async getCommunity(communityid) {
+        return fetch(`https://api.disadus.app/community/${communityid}`, {})
+            .then((res) => res.json())
+            .catch(() => null);
     }
 }
 exports.APIWrapper = APIWrapper;
