@@ -26,6 +26,7 @@ export enum PluginIntent {
   getAssignment = "getAssignment",
   getCourse = "getCourse",
   getCommunity = "getCommunity",
+  getLMSLinkedSelf = "getLMSLinkedSelf",
 }
 export class APIWrapper {
   _ready: boolean = false;

@@ -23,7 +23,8 @@ export declare enum PluginIntent {
     getUsers = "getUsers",
     getAssignment = "getAssignment",
     getCourse = "getCourse",
-    getCommunity = "getCommunity"
+    getCommunity = "getCommunity",
+    getLMSLinkedSelf = "getLMSLinkedSelf"
 }
 export declare class APIWrapper {
     _ready: boolean;

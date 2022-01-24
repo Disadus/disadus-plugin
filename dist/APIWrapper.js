@@ -10,6 +10,7 @@ var PluginIntent;
     PluginIntent["getAssignment"] = "getAssignment";
     PluginIntent["getCourse"] = "getCourse";
     PluginIntent["getCommunity"] = "getCommunity";
+    PluginIntent["getLMSLinkedSelf"] = "getLMSLinkedSelf";
 })(PluginIntent = exports.PluginIntent || (exports.PluginIntent = {}));
 class APIWrapper {
     constructor() {
