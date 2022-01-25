@@ -48,5 +48,6 @@ export declare class APIWrapper {
     getUser(userid: string): Promise<PublicUser | null>;
     getSelf(): Promise<User | null>;
     getCommunity(communityid: string): Promise<Community | null>;
+    getLMSSelf(communityID: string): Promise<import("./types/LMSTypes").SchoologySelf | null>;
 }
 //# sourceMappingURL=APIWrapper.d.ts.map

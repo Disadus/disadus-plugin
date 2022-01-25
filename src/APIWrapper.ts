@@ -1,4 +1,5 @@
 import { Community, PublicUser, User } from "./types/DisadusTypes";
+import { LMSLinkedUser } from "./types/LMSTypes";
 
 export type RequestResponse<T> = {
   event: string;
@@ -71,9 +72,8 @@ export class APIWrapper {
       }
       this.requests.delete(message.requestID);
     }
-    if (message.response.event === 'token'){
+    if (message.response.event === "token") {
       this._token = message.response.data;
-      
     }
   }
   ready(event: MessageEvent): void {
@@ -134,7 +134,7 @@ export class APIWrapper {
     return result.success;
   }
   async waitForToken() {
-    console.log("[APIWrapper]", "Waiting for token",this);
+    console.log("[APIWrapper]", "Waiting for token", this);
     while (!this._token) {
       await new Promise((resolve) => setTimeout(resolve, 20));
     }
@@ -159,6 +159,16 @@ export class APIWrapper {
   async getCommunity(communityid: string): Promise<Community | null> {
     return fetch(`https://api.disadus.app/community/${communityid}`, {})
       .then((res) => res.json())
+      .catch(() => null);
+  }
+  async getLMSSelf(communityID: string) {
+    const token = await this.waitForToken();
+    return fetch(`https://api.disadus.app/community/${communityID}/LMS/@me`, {
+      headers: {
+        Authorization: `Plugin ${token.token}`,
+      },
+    })
+      .then((res) => res.json() as Promise<LMSLinkedUser | null>)
       .catch(() => null);
   }
 }

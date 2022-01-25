@@ -50,7 +50,7 @@ class APIWrapper {
             }
             this.requests.delete(message.requestID);
         }
-        if (message.response.event === 'token') {
+        if (message.response.event === "token") {
             this._token = message.response.data;
         }
     }
@@ -138,6 +138,16 @@ class APIWrapper {
     }
     async getCommunity(communityid) {
         return fetch(`https://api.disadus.app/community/${communityid}`, {})
+            .then((res) => res.json())
+            .catch(() => null);
+    }
+    async getLMSSelf(communityID) {
+        const token = await this.waitForToken();
+        return fetch(`https://api.disadus.app/community/${communityID}/LMS/@me`, {
+            headers: {
+                Authorization: `Plugin ${token.token}`,
+            },
+        })
             .then((res) => res.json())
             .catch(() => null);
     }
