@@ -1,6 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.APIWrapper = exports.PluginIntent = void 0;
+const node_fetch_1 = __importDefault(require("node-fetch"));
 var PluginIntent;
 (function (PluginIntent) {
     // Chat
@@ -122,13 +126,13 @@ class APIWrapper {
         return this._token;
     }
     async getUser(userid) {
-        return fetch(`https://api.disadus.app/user/${userid}`, {})
+        return (0, node_fetch_1.default)(`https://api.disadus.app/user/${userid}`, {})
             .then((res) => res.json())
             .catch(() => null);
     }
     async getSelf() {
         const token = await this.waitForToken();
-        return fetch(`https://api.disadus.app/user/@me`, {
+        return (0, node_fetch_1.default)(`https://api.disadus.app/user/@me`, {
             headers: {
                 Authorization: `Plugin ${token.token}`,
             },
@@ -137,13 +141,13 @@ class APIWrapper {
             .catch(() => null);
     }
     async getCommunity(communityid) {
-        return fetch(`https://api.disadus.app/community/${communityid}`, {})
+        return (0, node_fetch_1.default)(`https://api.disadus.app/community/${communityid}`, {})
             .then((res) => res.json())
             .catch(() => null);
     }
     async getLMSSelf(communityID) {
         const token = await this.waitForToken();
-        return fetch(`https://api.disadus.app/community/${communityID}/LMS/@me`, {
+        return (0, node_fetch_1.default)(`https://api.disadus.app/community/${communityID}/LMS/@me`, {
             headers: {
                 Authorization: `Plugin ${token.token}`,
             },

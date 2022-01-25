@@ -1,6 +1,6 @@
 import { Community, PublicUser, User } from "./types/DisadusTypes";
 import { LMSLinkedUser } from "./types/LMSTypes";
-
+import fetch from "node-fetch";
 export type RequestResponse<T> = {
   event: string;
   success: boolean;
@@ -143,7 +143,7 @@ export class APIWrapper {
   }
   async getUser(userid: string): Promise<PublicUser | null> {
     return fetch(`https://api.disadus.app/user/${userid}`, {})
-      .then((res) => res.json())
+      .then((res) => res.json() as Promise<PublicUser | null>)
       .catch(() => null);
   }
   async getSelf(): Promise<User | null> {
@@ -153,12 +153,12 @@ export class APIWrapper {
         Authorization: `Plugin ${token.token}`,
       },
     })
-      .then((res) => res.json())
+      .then((res) => res.json() as Promise<User | null>)
       .catch(() => null);
   }
   async getCommunity(communityid: string): Promise<Community | null> {
     return fetch(`https://api.disadus.app/community/${communityid}`, {})
-      .then((res) => res.json())
+      .then((res) => res.json() as Promise<Community | null>)
       .catch(() => null);
   }
   async getLMSSelf(communityID: string) {
