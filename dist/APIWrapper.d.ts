@@ -34,7 +34,7 @@ export declare class APIWrapper {
     get readyState(): boolean;
     static _self: APIWrapper;
     static getInstance(): APIWrapper;
-    constructor();
+    constructor(node?: boolean);
     init(): void;
     processMessage(event: MessageEvent): void;
     ready(event: MessageEvent): void;
