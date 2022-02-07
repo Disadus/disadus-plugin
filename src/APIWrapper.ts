@@ -1,6 +1,6 @@
+import { nFetch as fetch } from "./customFetch";
 import { Community, PublicUser, User } from "./types/DisadusTypes";
 import { LMSLinkedUser } from "./types/LMSTypes";
-import fetch from "node-fetch";
 export type RequestResponse<T> = {
   event: string;
   success: boolean;
@@ -45,8 +45,8 @@ export class APIWrapper {
     return APIWrapper._self;
   }
 
-  constructor() {
-    this.init();
+  constructor(node?: boolean) {
+    if (!node) this.init();
   }
   init() {
     if (window.top) {
