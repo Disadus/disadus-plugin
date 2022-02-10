@@ -19,9 +19,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DisadusTypes = exports.APIWrapper = void 0;
+exports.DisadusTypes = exports.DisadusLMSTypes = exports.APIWrapper = void 0;
 const APIWrapper_1 = require("./APIWrapper");
 Object.defineProperty(exports, "APIWrapper", { enumerable: true, get: function () { return APIWrapper_1.APIWrapper; } });
 const DisadusTypes = __importStar(require("./types/DisadusTypes"));
 exports.DisadusTypes = DisadusTypes;
+const DisadusLMSTypes = __importStar(require("./types/LMSTypes"));
+exports.DisadusLMSTypes = DisadusLMSTypes;
 exports.default = APIWrapper_1.APIWrapper;
