@@ -1,10 +1,8 @@
 // eslint-disable-next-line no-eval
-const fetchPromise: Promise<typeof fetch> = import("node-fetch")
-  .then((mod: any) => mod.default)
-  .catch((er) => {
-    console.error("[APIWrapper]", "Fetch not found", er);
-    throw er;
-  });
+const fetchPromise: Promise<typeof fetch> = eval('import("node-fetch")')
+  .then((mod: { default: typeof fetch }) => mod.default)
+  // eslint-disable-next-line no-eval
+  .catch((_: any) => eval(require("node-fetch")));
 export const nFetch: typeof globalThis.fetch = (...args) => {
   if (globalThis.fetch) {
     return globalThis.fetch(...args);
