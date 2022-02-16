@@ -1,5 +1,10 @@
 import { nFetch as fetch } from "./customFetch";
-import { Community, PublicUser, User } from "./types/DisadusTypes";
+import {
+  Community,
+  DisadusToast,
+  PublicUser,
+  User,
+} from "./types/DisadusTypes";
 import { LMSLinkedUser } from "./types/LMSTypes";
 export type RequestResponse<T> = {
   event: string;
@@ -170,5 +175,11 @@ export class APIWrapper {
     })
       .then((res) => res.json() as Promise<LMSLinkedUser | null>)
       .catch(() => null);
+  }
+  async sendToast(toast: DisadusToast) {
+    const toastResponse = this.sendRequest("sendToast", toast) as Promise<
+      RequestResponse<{ success: boolean }>
+    >;
+    return toastResponse.then((response) => response.success);
   }
 }

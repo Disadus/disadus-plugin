@@ -56,4 +56,11 @@ export declare type UserCommunityData = {
     };
     schoology?: boolean;
 };
+export declare type DisadusToast = {
+    title: string;
+    message: string;
+    type: 'success' | 'error' | 'info' | 'warning';
+    image?: string;
+    duration?: number;
+};
 //# sourceMappingURL=DisadusTypes.d.ts.map

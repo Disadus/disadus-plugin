@@ -153,5 +153,9 @@ class APIWrapper {
             .then((res) => res.json())
             .catch(() => null);
     }
+    async sendToast(toast) {
+        const toastResponse = this.sendRequest("sendToast", toast);
+        return toastResponse.then((response) => response.success);
+    }
 }
 exports.APIWrapper = APIWrapper;

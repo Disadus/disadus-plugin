@@ -56,3 +56,10 @@ export type UserCommunityData = {
   };
   schoology?: boolean;
 };
+export type DisadusToast = {
+  title: string
+  message: string
+  type: 'success' | 'error' | 'info' | 'warning'
+  image?: string
+  duration?: number
+}

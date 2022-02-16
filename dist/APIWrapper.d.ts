@@ -1,4 +1,4 @@
-import { Community, PublicUser, User } from "./types/DisadusTypes";
+import { Community, DisadusToast, PublicUser, User } from "./types/DisadusTypes";
 export declare type RequestResponse<T> = {
     event: string;
     success: boolean;
@@ -49,5 +49,6 @@ export declare class APIWrapper {
     getSelf(): Promise<User | null>;
     getCommunity(communityid: string): Promise<Community | null>;
     getLMSSelf(communityID: string): Promise<import("./types/LMSTypes").SchoologySelf | null>;
+    sendToast(toast: DisadusToast): Promise<boolean>;
 }
 //# sourceMappingURL=APIWrapper.d.ts.map
