@@ -2,7 +2,7 @@
 const fetchPromise: Promise<typeof fetch> = eval('import("node-fetch")')
   .then((mod: { default: typeof fetch }) => mod.default)
   // eslint-disable-next-line no-eval
-  .catch((_: any) => eval(require("node-fetch")));
+  .catch((_: any)=>{});
 export const nFetch: typeof globalThis.fetch = (...args) => {
   if (globalThis.fetch) {
     return globalThis.fetch(...args);
