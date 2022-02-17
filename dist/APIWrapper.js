@@ -84,9 +84,10 @@ class APIWrapper {
         }
         console.log("[APIWrapper]", "readyy");
         this._ready = true;
-        console.log("[APIWrapper]", "Token", event.data);
+        console.log("[APIWrapper]", "T", event.data);
         const tokenInfo = JSON.parse(event.data);
         this._token = tokenInfo.response.data;
+        console.log("[APIWrapper]", "Token", this._token);
         window.addEventListener("message", this.processMessage.bind(this));
         window.removeEventListener("message", this.boundReady);
     }
