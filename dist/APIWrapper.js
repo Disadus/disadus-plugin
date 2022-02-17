@@ -63,7 +63,7 @@ class APIWrapper {
             }
             this.requests.delete(message.requestID);
         }
-        if (message.response.event === "token") {
+        if (message.response.event === "token" && message.response.data) {
             this._token = message.response.data;
             console.log("[APIWrapper]", "Refreshed token", this._token);
         }
