@@ -88,7 +88,6 @@ export class APIWrapper {
     }
     if (message.response.event === "token") {
       this._token = message.response.data;
-      localforage.setItem("__$DisadusAppToken", this._token);
     }
   }
   ready(event: MessageEvent): void {
@@ -106,10 +105,10 @@ export class APIWrapper {
     }
     console.log("[APIWrapper]", "readyy");
     this._ready = true;
-    console.log("[APIWrapper]", "Tok", event.data);
     const tokenInfo = JSON.parse(event.data) as RawResponse<TokenInfo>;
     this._token = tokenInfo.response.data;
-    console.log("[APIWrapper]", "Token", this._token);
+    console.log("[APIWrapper]", "Token", this._token,this);
+    localforage.setItem("__$DisadusAppToken", this._token);
     window.addEventListener("message", this.processMessage.bind(this));
     window.removeEventListener("message", this.boundReady!);
   }
