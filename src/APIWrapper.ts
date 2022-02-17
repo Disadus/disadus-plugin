@@ -88,6 +88,7 @@ export class APIWrapper {
     }
     if (message.response.event === "token") {
       this._token = message.response.data;
+      console.log("[APIWrapper]", "Refreshed token", this._token);
     }
   }
   ready(event: MessageEvent): void {
@@ -103,11 +104,13 @@ export class APIWrapper {
     } catch (error) {
       return;
     }
-    console.log("[APIWrapper]", "readyy");
-    this._ready = true;
+    console.log("[APIWrapper]", "Readying", JSON.parse(event.data));
     const tokenInfo = JSON.parse(event.data) as RawResponse<TokenInfo>;
     this._token = tokenInfo.response.data;
-    console.log("[APIWrapper]", "Token", this._token,this);
+    if (!this._token) return;
+    this._ready = true;
+
+    console.log("[APIWrapper]", "Token", this._token, this);
     localforage.setItem("__$DisadusAppToken", this._token);
     window.addEventListener("message", this.processMessage.bind(this));
     window.removeEventListener("message", this.boundReady!);
