@@ -106,7 +106,7 @@ export class APIWrapper {
     }
     console.log("[APIWrapper]", "readyy");
     this._ready = true;
-    console.log("[APIWrapper]", "T", event.data);
+    console.log("[APIWrapper]", "Tok", event.data);
     const tokenInfo = JSON.parse(event.data) as RawResponse<TokenInfo>;
     this._token = tokenInfo.response.data;
     console.log("[APIWrapper]", "Token", this._token);
