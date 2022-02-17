@@ -1,6 +1,6 @@
 {
   "name": "@Disadus/disadus-plugin-api",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "API for plugins to communicate with Disadus!",
   "main": "dist/index.js",
   "author": "John Li (Tet) <tet@tet.moe>",

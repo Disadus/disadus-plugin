@@ -1,6 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.APIWrapper = exports.PluginIntent = void 0;
+const localforage_1 = __importDefault(require("localforage"));
 const customFetch_1 = require("./customFetch");
 var PluginIntent;
 (function (PluginIntent) {
@@ -41,7 +45,14 @@ class APIWrapper {
         else {
             console.error("No window.top");
         }
-        window.addEventListener("message", this.ready.bind(this));
+        this.boundReady = this.ready.bind(this);
+        window.addEventListener("message", this.boundReady);
+        localforage_1.default.getItem("__$DisadusAppToken").then((store) => {
+            const token = store;
+            if (token && token.expires > Date.now()) {
+                this._token = token;
+            }
+        });
     }
     processMessage(event) {
         const message = JSON.parse(event.data);
@@ -54,6 +65,7 @@ class APIWrapper {
         }
         if (message.response.event === "token") {
             this._token = message.response.data;
+            localforage_1.default.setItem("__$DisadusAppToken", this._token);
         }
     }
     ready(event) {
@@ -76,7 +88,7 @@ class APIWrapper {
         const tokenInfo = JSON.parse(event.data);
         this._token = tokenInfo.response.data;
         window.addEventListener("message", this.processMessage.bind(this));
-        window.removeEventListener("message", this.ready.bind(this));
+        window.removeEventListener("message", this.boundReady);
     }
     getRequestId() {
         let requestId = Math.random().toString(36).substring(2);

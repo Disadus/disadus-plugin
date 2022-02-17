@@ -31,6 +31,7 @@ export declare class APIWrapper {
     _parent: MessageEventSource | null;
     _token: TokenInfo;
     requests: Map<string, (data: RawResponse<any>) => void>;
+    boundReady?: (data: MessageEvent<any>) => void;
     get readyState(): boolean;
     static _self: APIWrapper;
     static getInstance(): APIWrapper;

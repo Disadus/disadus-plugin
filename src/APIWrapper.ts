@@ -40,6 +40,7 @@ export class APIWrapper {
   _parent: MessageEventSource | null = null;
   _token: TokenInfo = null;
   requests: Map<string, (data: RawResponse<any>) => void> = new Map();
+  boundReady?: (data: MessageEvent<any>) => void;
   get readyState(): boolean {
     return this._ready;
   }
@@ -67,7 +68,8 @@ export class APIWrapper {
     } else {
       console.error("No window.top");
     }
-    window.addEventListener("message", this.ready.bind(this));
+    this.boundReady = this.ready.bind(this);
+    window.addEventListener("message", this.boundReady);
     localforage.getItem("__$DisadusAppToken").then((store) => {
       const token = store as TokenInfo;
       if (token && token.expires > Date.now()) {
@@ -109,7 +111,7 @@ export class APIWrapper {
     this._token = tokenInfo.response.data;
 
     window.addEventListener("message", this.processMessage.bind(this));
-    window.removeEventListener("message", this.ready.bind(this));
+    window.removeEventListener("message", this.boundReady!);
   }
   getRequestId() {
     let requestId = Math.random().toString(36).substring(2);
