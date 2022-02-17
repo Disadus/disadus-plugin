@@ -1,3 +1,4 @@
+import localforage from "localforage";
 import { nFetch as fetch } from "./customFetch";
 import {
   Community,
@@ -67,6 +68,12 @@ export class APIWrapper {
       console.error("No window.top");
     }
     window.addEventListener("message", this.ready.bind(this));
+    localforage.getItem("__$DisadusAppToken").then((store) => {
+      const token = store as TokenInfo;
+      if (token && token.expires > Date.now()) {
+        this._token = token as TokenInfo;
+      }
+    });
   }
   processMessage(event: MessageEvent): void {
     const message = JSON.parse(event.data) as RawResponse<any>;
@@ -79,6 +86,7 @@ export class APIWrapper {
     }
     if (message.response.event === "token") {
       this._token = message.response.data;
+      localforage.setItem("__$DisadusAppToken", this._token);
     }
   }
   ready(event: MessageEvent): void {
